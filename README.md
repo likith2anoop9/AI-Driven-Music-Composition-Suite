@@ -1,6 +1,5 @@
 # AI-Driven-Music-Composition-Suite
 
-![Project Banner](https://via.placeholder.com/1200x400?text=Advanced+Music+and+Voice+Generator)
 
 ## Overview
 The **Advanced Music and Voice Generator** is a cutting-edge project that combines generative AI tools (GAITs) to create music, generate lyrics, and clone voices. This Flask-based application offers a user-friendly interface where users can input prompts and receive fully composed songs with lyrics and voice overlays.
