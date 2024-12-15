@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Music Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Music Generator</h1>
+        
+        <!-- Main Form -->
+        <form id="lyricForm" class="mt-4">
+            <div class="mb-3">
+                <label for="prompt" class="form-label">Song Prompt:</label>
+                <textarea id="prompt" name="prompt" class="form-control" rows="3" required 
+                    placeholder="Describe your song idea..."></textarea>
+            </div>
+
+            <!-- Musical Controls Section -->
+            <div class="musical-controls">
+                <h4>Musical Elements</h4>
+                
+                <!-- Genre Presets -->
+                <div class="mb-3">
+                    <label class="form-label">Genre Presets:</label>
+                    <div class="preset-buttons" id="genrePresets">
+                        <button type="button" class="preset-button" data-genre="pop">Pop</button>
+                        <button type="button" class="preset-button" data-genre="rock">Rock</button>
+                        <button type="button" class="preset-button" data-genre="jazz">Jazz</button>
+                        <button type="button" class="preset-button" data-genre="hip_hop">Hip Hop</button>
+                    </div>
+                </div>
+
+                <!-- Mood Selection -->
+                <div class="mb-3">
+                    <label class="form-label">Mood:</label>
+                    <div class="preset-buttons" id="moodPresets">
+                        <button type="button" class="preset-button" data-mood="happy">Happy</button>
+                        <button type="button" class="preset-button" data-mood="sad">Sad</button>
+                        <button type="button" class="preset-button" data-mood="energetic">Energetic</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="key" class="form-label">Key:</label>
+                            <select id="key" name="key" class="form-select">
+                                <option value="C">C Major</option>
+                                <option value="G">G Major</option>
+                                <option value="D">D Major</option>
+                                <option value="A">A Major</option>
+                                <option value="E">E Major</option>
+                                <option value="Am">A Minor</option>
+                                <option value="Em">E Minor</option>
+                                <option value="Dm">D Minor</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="style" class="form-label">Style:</label>
+                            <input type="text" id="style" name="style" class="form-control" 
+                                placeholder="e.g., rock, pop, jazz">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tempo Slider -->
+                <div class="slider-container">
+                    <label for="tempo" class="form-label">
+                        Tempo: <span id="tempoValue" class="slider-value">120</span> BPM
+                    </label>
+                    <input type="range" id="tempo" name="tempo" class="form-range" 
+                        min="60" max="200" value="120">
+                </div>
+
+                <!-- Instruments -->
+                <div class="mb-3">
+                    <label class="form-label">Instruments:</label>
+                    <div class="instrument-grid" id="instrumentGrid">
+                        <!-- Basic Instruments -->
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="piano" name="instruments[]" value="piano">
+                            <label for="piano">Piano</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="guitar" name="instruments[]" value="guitar">
+                            <label for="guitar">Guitar</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="drums" name="instruments[]" value="drums">
+                            <label for="drums">Drums</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="bass" name="instruments[]" value="bass">
+                            <label for="bass">Bass</label>
+                        </div>
+                        
+                        <!-- Electronic Instruments -->
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="synth" name="instruments[]" value="synth">
+                            <label for="synth">Synth</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="turntable" name="instruments[]" value="turntable">
+                            <label for="turntable">Turntable</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="beatbox" name="instruments[]" value="beatbox">
+                            <label for="beatbox">Beatbox</label>
+                        </div>
+
+                        <!-- Orchestral Instruments -->
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="strings" name="instruments[]" value="strings">
+                            <label for="strings">Strings</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="trumpet" name="instruments[]" value="trumpet">
+                            <label for="trumpet">Trumpet</label>
+                        </div>
+                        <div class="instrument-checkbox">
+                            <input type="checkbox" id="saxophone" name="instruments[]" value="saxophone">
+                            <label for="saxophone">Saxophone</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-step Generation Buttons -->
+            <div class="two-step-generation">
+                <button type="button" id="previewLyricsBtn" class="btn btn-outline-success w-100 mb-3">Preview Lyrics</button>
+                <button type="button" id="generateMusicBtn" class="btn w-100 mb-3" style="display: none;">Generate Music</button>
+            </div>
+        </form>
+
+        <!-- Lyrics Preview Section -->
+        <div id="lyricsPreview" class="lyrics-preview-section" style="display: none;">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Generated Lyrics Preview</h5>
+                    <pre id="previewLyricsText" class="lyrics-text"></pre>
+                    
+                    <div class="lyrics-feedback mt-3">
+                        <label for="lyricsEdits" class="form-label">Suggest Changes:</label>
+                        <textarea id="lyricsEdits" class="form-control mb-3" rows="3" 
+                            placeholder="Describe any changes you'd like to make to the lyrics..."></textarea>
+                        <div class="btn-group w-100">
+                            <button type="button" id="regenerateLyricsBtn" class="btn btn-outline-primary">
+                                Regenerate Lyrics
+                            </button>
+                            <button type="button" id="proceedToMusicBtn" class="btn btn-success">
+                                Proceed to Music Generation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <a href="/clone_voice" class="btn btn-secondary">Go to Voice Cloning</a>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="loading-animation">
+                <div class="music-bars">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <h3 class="loading-title">Creating your music...</h3>
+            <div class="loading-steps">
+                <p id="loadingStep" class="step-text">Initializing generation...</p>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="mt-5" style="display: none;">
+            <h2>Generated Media:</h2>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Music Generator</p>
+    </footer>
+
+    <script>
+        // Genre-based instrument mapping
+        const genreInstruments = {
+            'pop': ['piano', 'drums', 'bass', 'synth', 'guitar', 'strings'],
+            'rock': ['guitar', 'drums', 'bass', 'piano', 'synth'],
+            'jazz': ['piano', 'bass', 'drums', 'saxophone', 'trumpet', 'strings'],
+            'hip_hop': ['drums', 'bass', 'synth', 'piano', 'turntable', 'beatbox']
+        };
+
+        let currentLyrics = '';
+
+        // Function to update instruments based on genre
+        function updateInstruments(genre) {
+            document.querySelectorAll('input[name="instruments[]"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            if (genreInstruments[genre]) {
+                genreInstruments[genre].forEach(instrument => {
+                    const checkbox = document.getElementById(instrument);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+
+        // Loading steps array
+        const loadingSteps = [
+            "Analyzing your musical preferences...",
+            "Composing melody and harmonies...",
+            "Generating lyrics...",
+            "Applying musical arrangements...",
+            "Finalizing your creation..."
+        ];
+
+        let currentStep = 0;
+
+        function updateLoadingStep() {
+            if (currentStep < loadingSteps.length) {
+                document.getElementById('loadingStep').textContent = loadingSteps[currentStep];
+                currentStep++;
+                setTimeout(updateLoadingStep, 2000);
+            }
+        }
+
+        // Handle preview lyrics button
+        document.getElementById('previewLyricsBtn').addEventListener('click', async () => {
+            const formData = new FormData(document.getElementById('lyricForm'));
+            formData.append('preview_only', 'true');
+            
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('previewLyricsBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/generate_lyrics', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    alert('Error generating lyrics: ' + result.error);
+                } else {
+                    currentLyrics = result.lyrics;
+                    document.getElementById('previewLyricsText').textContent = currentLyrics;
+                    document.getElementById('lyricsPreview').style.display = 'block';
+                    document.getElementById('previewLyricsBtn').style.display = 'none';
+                    document.getElementById('generateMusicBtn').style.display = 'block';
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('previewLyricsBtn').disabled = false;
+            }
+        });
+
+        // Handle regenerate lyrics button
+        document.getElementById('regenerateLyricsBtn').addEventListener('click', async () => {
+            const edits = document.getElementById('lyricsEdits').value;
+            if (!edits.trim()) {
+                alert('Please describe the changes you want to make.');
+                return;
+            }
+            
+            const formData = new FormData(document.getElementById('lyricForm'));
+            formData.append('edits', edits);
+            formData.append('preview_only', 'true');
+            
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('regenerateLyricsBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/generate_lyrics', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    alert('Error regenerating lyrics: ' + result.error);
+                } else {
+                    currentLyrics = result.lyrics;
+                    document.getElementById('previewLyricsText').textContent = currentLyrics;
+                    document.getElementById('lyricsEdits').value = '';
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('regenerateLyricsBtn').disabled = false;
+            }
+        });
+
+        // Handle proceed to music generation button
+        document.getElementById('proceedToMusicBtn').addEventListener('click', async () => {
+            const formData = new FormData(document.getElementById('lyricForm'));
+            
+            // Add the current lyrics to the form data
+            formData.append('previewed_lyrics', currentLyrics);
+            
+            // Show loading
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            currentStep = 0;
+            updateLoadingStep();
+            
+            // Add selected genre and mood
+            const activeGenre = document.querySelector('#genrePresets .preset-button.active');
+            const activeMood = document.querySelector('#moodPresets .preset-button.active');
+            
+            if (activeGenre) formData.append('genre', activeGenre.dataset.genre);
+            if (activeMood) formData.append('mood', activeMood.dataset.mood);
+            
+            // Get selected instruments
+            const instruments = Array.from(document.querySelectorAll('input[name="instruments[]"]:checked'))
+                .map(checkbox => checkbox.value);
+            formData.append('instruments', JSON.stringify(instruments));
+
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+                const outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = '';
+
+                if (result.error) {
+                    outputDiv.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            Error: ${result.error}
+                        </div>
+                    `;
+                } else {
+                    result.forEach(item => {
+                        outputDiv.innerHTML += `
+                        <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Generated Music</h5>
+                                    
+                                    <!-- Audio Player -->
+                                    <div class="mb-3">
+                                        <audio controls class="w-100">
+                                            <source src="${item.audio_url}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                    
+                                    <!-- Download Links -->
+                                    <div class="btn-group w-100 mb-4">
+                                        <a href="${item.audio_url}" class="btn btn-primary" target="_blank">
+                                            Download Audio
+                                        </a>
+                                        <a href="${item.video_url}" class="btn btn-secondary" target="_blank">
+                                            View Video
+                                        </a>
+                                        <a href="/clone_voice?source=${encodeURIComponent(item.audio_url)}" 
+                                            class="btn btn-success">
+                                                Clone This Song
+                                        </a>
+                                    </div>
+
+                                    <!-- Lyrics Display -->
+                                    <div class="lyrics-section mb-4">
+                                        <h6>Generated Lyrics:</h6>
+                                        <pre class="lyrics-text">${item.lyrics}</pre>
+                                    </div>
+
+                                    <!-- Settings Used -->
+                                    <div class="mb-4">
+                                        <h6>Settings Used:</h6>
+                                        <ul class="list-unstyled">
+                                            <li><strong>Key:</strong> ${item.settings_used.key || 'Default'}</li>
+                                            <li><strong>Tempo:</strong> ${item.settings_used.tempo} BPM</li>
+                                            <li><strong>Genre:</strong> ${item.settings_used.genre || 'Custom'}</li>
+                                            <li><strong>Mood:</strong> ${item.settings_used.mood || 'Not specified'}</li>
+                                            <li><strong>Instruments:</strong> ${item.settings_used.instruments?.join(', ') || 'Default'}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) {
+                document.getElementById('output').innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        An error occurred: ${error.message}
+                    </div>
+                `;
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
+            }
+        });
+
+        // Handle genre presets
+        document.querySelectorAll('#genrePresets .preset-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                document.querySelectorAll('#genrePresets .preset-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                updateInstruments(e.target.dataset.genre);
+            });
+        });
+
+        // Handle mood presets
+        document.querySelectorAll('#moodPresets .preset-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('#moodPresets .preset-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+            });
+        });
+
+        // Handle tempo slider
+        document.getElementById('tempo').addEventListener('input', (e) => {
+            document.getElementById('tempoValue').textContent = e.target.value;
+        });
+    </script>
+</body>
+</html>
