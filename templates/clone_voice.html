@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Cloning</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .progress {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .preview-audio {
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Add styles for pre-loaded audio section */
+        .preloaded-audio {
+            background-color: #282828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Voice Cloning</h1>
+        <div class="card">
+            <div class="card-body">
+                <form id="cloneForm" action="/clone_voice" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        {% if source_audio %}
+                            <!-- Pre-loaded audio from generated song -->
+                            <div class="preloaded-audio">
+                                <h5 class="mb-3">Generated Song Audio</h5>
+                                <audio controls class="w-100 mb-3">
+                                    <source src="{{ source_url }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                                <input type="hidden" name="source_audio" value="{{ source_audio }}">
+                                <p class="text-muted small">Using audio from your generated song</p>
+                            </div>
+                        {% else %}
+                            <!-- Regular file upload -->
+                            <label for="audio" class="form-label">Upload Audio:</label>
+                            <input type="file" name="audio" id="audio" class="form-control" accept=".mp3,.wav" required>
+                            <small class="text-muted">Supported formats: MP3, WAV (Max size: 16MB)</small>
+                            <audio id="audioPreview" class="preview-audio" controls></audio>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="voice_id" class="form-label">Select Voice:</label>
+                        <select name="voice_id" id="voice_id" class="form-select" required>
+                            {% if voices %}
+                                {% for voice in voices %}
+                                    <option value="{{ voice.id }}">{{ voice.name }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="">No voices available</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Clone Voice</button>
+                </form>
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Processing your audio... This may take a few minutes.</p>
+                </div>
+            </div>
+        </div>
+        <a href="/" class="btn btn-secondary mt-3">Back to Music Generator</a>
+    </div>
+    <script>
+        const audioInput = document.getElementById('audio');
+        const audioPreview = document.getElementById('audioPreview');
+
+        // Only add event listener if audio input exists (not pre-loaded case)
+        if (audioInput) {
+            audioInput.addEventListener('change', () => {
+                const file = audioInput.files[0];
+                if (file) {
+                    const url = URL.createObjectURL(file);
+                    audioPreview.src = url;
+                    audioPreview.style.display = 'block';
+                }
+            });
+        }
+
+        // Add form submission handling
+        document.getElementById('cloneForm').addEventListener('submit', () => {
+            document.getElementById('loadingIndicator').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
