@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # Constants
 CHUNK_SIZE = 1024
-XI_API_KEY = "your elevenlabs API"
+XI_API_KEY = "your_elevenlabs_api_key"
 
 # Create necessary directories
 os.makedirs("static/sheets", exist_ok=True)
