@@ -75,22 +75,6 @@ The **Advanced Music and Voice Generator** is a cutting-edge project that combin
 - Incorporate more GAITs for diverse musical styles and voices.
 - Optimize performance for faster processing and rendering.
 
-## Contributing
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add a new feature"
-   ```
-4. Push the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a pull request.
-
 
 ## Acknowledgments
 - **GPT-4o Mini** for creative and dynamic lyrics generation.
