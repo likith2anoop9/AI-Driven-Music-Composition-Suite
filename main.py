@@ -519,7 +519,7 @@ def generate_lyrics(prompt, style="bollywood hip hop", title="", key=None, tempo
     
     headers = {
         "accept": "application/json",
-        "authorization": "Bearer API-from-AceData",
+        "authorization": "Bearer your_ace_data_api_key",
         "content-type": "application/json"
     }
 
