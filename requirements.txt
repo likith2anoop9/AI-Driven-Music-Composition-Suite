@@ -1,0 +1,7 @@
+Flask==2.1.2
+requests==2.28.1
+openai==0.27.8
+pydub==0.25.1
+music21==6.7.1
+reportlab==3.6.12
+python-dotenv==0.21.0
