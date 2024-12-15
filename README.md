@@ -17,7 +17,7 @@ The **Advanced Music and Voice Generator** is a cutting-edge project that combin
   - GPT-4o Mini for lyrics generation
   - Suno AI (via Ace Data Cloud) for music generation
   - ElevenLabs for voice cloning
-- **Libraries**: Music21, Pydub, ReportLab
+- **Libraries**: Pydub, ReportLab
 
 ## Workflow Diagram
 1. User provides input prompt with details such as mood, genre, tempo, and instruments.
