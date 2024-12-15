@@ -62,7 +62,7 @@ The **Advanced Music and Voice Generator** is a cutting-edge project that combin
 4. **Preview and Download**: Listen to the output and download the lyrics, music, or vocalized track.
 
 ## Example
-![Workflow Screenshot]![image](https://github.com/user-attachments/assets/b8cf9879-bb02-47b9-a336-ba72eb9f134e)
+![image](https://github.com/user-attachments/assets/b8cf9879-bb02-47b9-a336-ba72eb9f134e)
 
 
 ## Challenges and Learnings
