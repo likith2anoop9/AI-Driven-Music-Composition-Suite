@@ -29,11 +29,11 @@ The **Advanced Music and Voice Generator** is a cutting-edge project that combin
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/advanced-music-generator.git
+   git clone https://github.com/yourusername/AI-Driven-Music-Composition-Suite.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd advanced-music-generator
+   cd AI-Driven-Music-Composition-Suite
    ```
 3. Install the required dependencies:
    ```bash
