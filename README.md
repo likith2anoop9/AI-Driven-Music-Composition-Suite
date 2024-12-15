@@ -1,6 +1,6 @@
 # AI-Driven-Music-Composition-Suite
 
-![Project Banner]<img width="505" alt="Screenshot 2024-12-15 at 5 06 46 PM" src="https://github.com/user-attachments/assets/29cda83e-f35a-48f0-8c3d-2e136540a3d3" />
+!<img width="505" alt="Screenshot 2024-12-15 at 5 06 46 PM" src="https://github.com/user-attachments/assets/29cda83e-f35a-48f0-8c3d-2e136540a3d3" />
 
 
 ## Overview
